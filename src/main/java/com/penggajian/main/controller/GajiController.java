@@ -53,12 +53,14 @@ public class GajiController {
 	{
 		List<Gaji> all = new ArrayList<Gaji>();
 		List<Gaji> gaj = gajiService.FindAll();
+		model.addAttribute("pegawai", pegawaiService.FindAll());
+		
 		for (Gaji gaji : gaj) {
-			System.out.println(gaji.getPasswordEnkrip().length());
-			  String gajiBersih =  caesarEncript.decrypt(gaji.getGajiBersih().toString(), gaji.getPasswordEnkrip().length());
-			  String jumlahPotongan =  caesarEncript.decrypt(gaji.getJumlahPotongan().toString(), gaji.getPasswordEnkrip().length());
+			System.out.println("masuk "+gaji.getPasswordEnkrip().length());
+			  String gajiBersih =  caesarEncript.decrypt(gaji.getGajiBersih(), gaji.getPasswordEnkrip().length());
+			  String jumlahPotongan =  caesarEncript.decrypt(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip().length());
 			  String gajiKotor =  caesarEncript.decrypt(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip().length());
-			  String pph21 = caesarEncript.decrypt(gaji.getPph21().toString(), gaji.getPasswordEnkrip().length());
+			  String pph21 = caesarEncript.decrypt(gaji.getPph21(), gaji.getPasswordEnkrip().length());
 			  
 			  gaji.setGajiBersih(gajiBersih);
 			  gaji.setGajiKotor(gajiKotor);
@@ -67,8 +69,7 @@ public class GajiController {
 			  
 			  all.add(gaji);
 		}
-		model.addAttribute("gaji", all);
-		model.addAttribute("pegawai", pegawaiService.FindAll());
+		model.addAttribute("gaji", all);		
 		return viewPrefix+"gaji";
 	}
 	
@@ -97,8 +98,8 @@ public class GajiController {
 	}
 
 	@RequestMapping(value="/trx", method=RequestMethod.POST)
-	public String createGaji(@Valid @ModelAttribute("gaji3") Gaji gajiForm, BindingResult result, 
-			Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String createGaji(@Valid @ModelAttribute("gaji") Gaji gajiForm, BindingResult result, 
+			Model model, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpServletRequest request) throws IOException {
 		Pegawai pegawai = new Pegawai();
 		
 		
@@ -108,8 +109,6 @@ public class GajiController {
 		String gk = request.getParameter("gajiKotor");
 		String pp = request.getParameter("pph21");
 		Integer ps = request.getParameter("passwordEnkrip").length();
-		
-		System.out.println("password enc "+ps);
 		
 		  String gajiBersih =  caesarEncript.encrypt(gb, ps);
 		  String jumlahPotongan =  caesarEncript.encrypt(jp, ps);
@@ -123,7 +122,25 @@ public class GajiController {
 		gajiForm.setPph21(pph21);
 		gajiForm.setPegawai(pegawai);
 		gajiService.createGaji(gajiForm);
-		redirectAttributes.addFlashAttribute("info", "Pegawai created successfully");
+		redirectAttributes.addFlashAttribute("info", "Gaji created successfully");
+		
+		Utility util = new Utility();
+		Map<String,Object> parameterMap = new HashMap<String,Object>();
+		List<Gaji> gaj = gajiService.findByone(nip);
+		JRDataSource datasource = new JRBeanCollectionDataSource(gaj);
+		parameterMap.put("datasource", datasource);
+
+		File file = new ClassPathResource("reports/report.jrxml").getFile();
+		
+		String absoluteFile = file.getAbsolutePath();
+//				context.getRealPath("resources/reports/slipgaji.jrxml");
+//		String path = request.getRealPath("reports/slipgaji.jrxml");		
+
+		JasperPrint jasperPrint = util.getObjectPdf(absoluteFile, parameterMap, datasource);
+
+		Utility.sendPdfResponse(response, jasperPrint, "slip gaji");
+		
+		
 		return "redirect:/trx";
 	}
 	

@@ -40,7 +40,8 @@ public class Gaji implements Serializable {
 	private Date tanggal;
 
 	//bi-directional many-to-one association to Pegawai
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JoinColumn(name = "pegawai_nip", updatable = false)
 	private Pegawai pegawai;
 
 	public Gaji() {

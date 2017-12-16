@@ -34,7 +34,7 @@ public class Pegawai implements Serializable {
 	private String telpon;
 
 	//bi-directional many-to-one association to Gaji
-	@OneToMany(mappedBy="pegawai")
+	@OneToMany(mappedBy="pegawai",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<Gaji> gajis;
 
 	public Pegawai() {
@@ -104,18 +104,6 @@ public class Pegawai implements Serializable {
 		this.gajis = gajis;
 	}
 
-	public Gaji addGaji(Gaji gaji) {
-		getGajis().add(gaji);
-		gaji.setPegawai(this);
-
-		return gaji;
-	}
-
-	public Gaji removeGaji(Gaji gaji) {
-		getGajis().remove(gaji);
-		gaji.setPegawai(null);
-
-		return gaji;
-	}
+	
 
 }

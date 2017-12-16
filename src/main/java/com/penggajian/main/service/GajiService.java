@@ -24,10 +24,7 @@ public class GajiService {
 	public Gaji createGaji(Gaji gaji){
 		return gajiRepository.save(gaji);
 	}	
-	public Gaji deleteGaji(Gaji gaji){
-		gajiRepository.delete(gaji);
-		return gaji;
-	}	
+	
 	public Gaji getGajiID(int no_gaji){
 		return gajiRepository.findOne(no_gaji);
 	}
