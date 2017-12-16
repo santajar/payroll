@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorator="layout/mainLayout">
+      
+      <head>
+        <title>Bank - Edit</title>
+    </head>
+    <body>
+    	        
+    	<div layout:fragment="content">
+	        
+              <div class="box box-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Edit Bank</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <form role="form" th:action="@{/bank/{id_bank}(nip=${bank.id_bank})}" th:object="${bank}" method="post"  enctype="multipart/form-data">
+                    <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
+                    <!-- text input -->
+                     <div class="form-group" th:classappend="${#fields.hasErrors('nama_bank')}? 'has-error'">
+                      <label>Nama Bank</label>
+                      <input type="text" class="form-control" name="nama_bank" th:field="*{nama_bank}" placeholder="Enter Bank Name"/>
+                      <p th:if="${#fields.hasErrors('nama_bank')}" th:errors="*{nama_bank}" th:class="text-red">Incorrect data</p>
+                    </div>  
+                    <div class="form-group" th:classappend="${#fields.hasErrors('alamat_bank')}? 'has-error'">
+                      <label>Alamat Bank</label>
+                      <input type="text" class="form-control" name="alamat_bank" th:field="*{alamat_bank}" placeholder="Enter Bank Address"/>
+                      <p th:if="${#fields.hasErrors('alamat_bank')}" th:errors="*{alamat_bank}" th:class="text-red">Incorrect data</p>
+                    </div>
+                    <div class="box-footer">
+	                    <button type="submit" class="btn btn-primary">Submit</button>
+	                </div>
+                  </form>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+    	</div>
+    	
+    </body>
+    
+</html>

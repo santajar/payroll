@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorator="layout/mainLayout">
+      
+      <head>
+        <title>Pegawai - New</title>
+    </head>
+    <body>
+        
+    	<div layout:fragment="content">
+	        
+              <div class="box box-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Create New Pegawai</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <form role="form" th:action="@{/pegawai}" th:object="${pegawai}" method="post" enctype="multipart/form-data">
+                    <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
+                    <!-- text input -->
+                    <div class="form-group" th:classappend="${#fields.hasErrors('nip')}? 'has-error'">
+                      <label>Nomor Pegawai</label>
+                      <input type="text" class="form-control" name="no_ktp" th:field="*{nip}" placeholder="Enter ID Pegawai"/>
+                      <p th:if="${#fields.hasErrors('nip')}" th:errors="*{nip}" th:class="text-red">Incorrect data</p>
+                    </div> 
+                    <div class="form-group" th:classappend="${#fields.hasErrors('no_ktp')}? 'has-error'">
+                      <label>Nomor KTP</label>
+                      <input type="text" class="form-control" name="no_ktp" th:field="*{no_ktp}" placeholder="Enter KTP Number"/>
+                      <p th:if="${#fields.hasErrors('no_ktp')}" th:errors="*{no_ktp}" th:class="text-red">Incorrect data</p>
+                    </div>  
+                    <div class="form-group" th:classappend="${#fields.hasErrors('nama_pegawai')}? 'has-error'">
+                      <label>Nama Pegawai</label>
+                      <input type="text" class="form-control" name="nama_pegawai" th:field="*{nama_pegawai}" placeholder="Enter Pegawai Name"/>
+                      <p th:if="${#fields.hasErrors('nama_pegawai')}" th:errors="*{nama_pegawai}" th:class="text-red">Incorrect data</p>
+                    </div>  
+                    <div class="form-group" th:classappend="${#fields.hasErrors('npwp')}? 'has-error'">
+                      <label>NPWP</label>
+                      <input type="text" class="form-control" name="npwp" th:field="*{npwp}" placeholder="Enter NPWP"/>
+                      <p th:if="${#fields.hasErrors('npwp')}" th:errors="*{npwp}" th:class="text-red">Incorrect data</p>
+                    </div>
+                    <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+                      <label>Email</label>
+                      <input type="text" class="form-control" name="email" th:field="*{email}" placeholder="Enter Email"/>
+                      <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:class="text-red">Incorrect data</p>
+                    </div>
+                    <div class="form-group" th:classappend="${#fields.hasErrors('telpon')}? 'has-error'">
+                      <label>Telephone</label>
+                      <input type="text" class="form-control" name="telpon" th:field="*{telpon}" placeholder="Enter Telephone Number"/>
+                      <p th:if="${#fields.hasErrors('telpon')}" th:errors="*{telpon}" th:class="text-red">Incorrect data</p>
+                    </div>  
+                   	<div class="box-footer">
+	                    <button type="submit" class="btn btn-primary">Submit</button>
+	                    
+	                </div>
+                  </form>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+    	</div>
+    	
+    </body>
+    
+</html>

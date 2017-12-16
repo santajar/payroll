@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+   layout:decorator="layout/mainLayout">
+   <head>
+      <title>Gaji - New</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script th:inline="javascript">
+         $(document).ready(function(){
+        	 console.log("dapet "+guid());
+          document.getElementById('no_gaji').value = guid();
+          $('#pegawaiID').change(function() {
+           
+           var pegawaiIDS = $('#pegawaiID').val();
+         	//console.log("ini "+pegawaiIDS);
+             $.ajax({
+                 type:"GET",
+                 url : "/getValueNorek",
+                 data : { id: pegawaiIDS },
+                 success : function(data) {				        	
+                     $("#rekening").val(data);
+                 },
+                 
+                 error: function(e) {
+                 	/* console.log(e.message);
+                     alert(e.message);  */
+                 }
+             });
+         });
+         });
+         
+         function guid() {
+        	  function s4() {
+        	    return Math.floor((1 + Math.random()) * 0x10000)
+        	      .toString(16)
+        	      .substring(1);
+        	  }
+        	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        	    s4() + '-' + s4() + s4() + s4();
+        	}
+           
+      </script>
+      <script type="text/javascript">
+         $(document).ready(function() {
+         	document.getElementById("kotor").defaultValue = "0";
+         	document.getElementById("pph").disabled = true;
+             //this calculates values automatically 
+             sum();
+             $("#pph, #potongan, #kotor").on("keydown keyup", function() {
+                 sum();
+             });
+         });
+         
+         function sum() {
+                     var num1 = document.getElementById('pph').value;
+                     var num2 = document.getElementById('potongan').value;
+                     var num3 = document.getElementById('kotor').value;
+         			var result = parseInt(num3) - parseInt(num1) - parseInt(num2);
+                     if (!isNaN(result)) {
+                         document.getElementById('netto').value = result;
+                     }
+                 }
+      </script>
+      <script type="text/javascript">
+         $(document).ready(function() {
+         	document.getElementById("kotor").defaultValue = "0";
+         	document.getElementById("pph").disabled = true;
+             //this calculates values automatically 
+             $(" #kotor").on("keydown keyup", function() {
+                 dis();
+             });
+         });
+         
+         function dis() {
+                     var num3 = document.getElementById('kotor').value;
+                     if (num3 > 4500000) {
+                     	//alert("masuk");
+                     	document.getElementById("pph").disabled = false;
+                     }else{
+                     	document.getElementById("pph").disabled = true;
+                     }
+                 }
+      </script>
+   </head>
+   <body>
+      <div layout:fragment="content">
+         <div class="box box-warning">
+            <div class="box-header with-border">
+               <h3 class="box-title">Create New Gaji Pegawai</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" >
+               <form role="form" th:action="@{/trx}" th:object="${gaji}" method="post" enctype="multipart/form-data">
+                  <div class="row">
+                     <p th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:class="text-red">Incorrect data</p>
+                     <!-- text input -->
+                     <div class="form-row" >
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('no_gaji')}? 'has-error'" th:object="${gaji}">
+                           <label>Nomor Gaji</label>
+                           <input type="text" class="form-control" id="no_gaji" name="no_gaji" readonly="readonly" />
+                           <!-- <p th:if="${#fields.hasErrors('no_gaji')}" th:errors="*{no_gaji}" th:class="text-red">Incorrect data</p> -->
+                        </div>
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('nip')}? 'has-error'" th:object="${pegawai}">
+                           <label>Pegawai</label>
+                           <div>
+                              <select id="pegawaiID" class="form-control" th:field="*{nip}" name="nip" >
+                                 <option value="0">--</option>
+                                 <option th:each="cat : ${listpegawai}" 
+                                    th:value="${cat.nip}" 
+                                    th:text="${cat.nama_pegawai}">Category</option>
+                              </select>
+                              <p th:if="${#fields.hasErrors('nip')}" th:errors="*{nip}" th:class="text-red">Incorrect data</p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6" th:classappend="${#fields.hasErrors('tanggal')}? 'has-error'">
+                        <label>Create Date</label>
+                        <input type="date" class="form-control" data-date-format="yyyy-MM-dd"  name="tanggal" th:field="*{tanggal}" placeholder="Enter Date"/>
+                        <p th:if="${#fields.hasErrors('tanggal')}" th:errors="tanggal" th:class="text-red">Incorrect data</p>
+                     </div>
+                     <div class="form-row">
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('telpon')}? 'has-error'" th:object="${pegawai}">
+                           <label>Nomor Rekening</label>
+                           <input type="text" class="form-control" id="rekening" name="rekening" readonly="readonly" />
+                           <!-- <p th:if="${#fields.hasErrors('telpon')}" th:errors="*{telpon}" th:class="text-red">Incorrect data</p> -->
+                        </div>
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('passwordEnkrip')}? 'has-error'">
+                           <label>Password</label>
+                           <input type="password" class="form-control" name="passwordEnkrip" th:field="*{passwordEnkrip}" placeholder="Enter Password Enkrip"/>
+                           <p th:if="${#fields.hasErrors('passwordEnkrip')}" th:errors="*{passwordEnkrip}" th:class="text-red">Incorrect data</p>
+                        </div>
+                     </div>
+                  </div>
+                  <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+                  <div class="row">
+                     <div class="form-row">
+                     	<div class="form-group col-md-6" th:classappend="${#fields.hasErrors('gajiKotor')}? 'has-error'">
+                           <label>Gaji Kotor</label>
+                           <input type="number" id="kotor" class="form-control" name="gajiKotor" th:field="*{gajiKotor}" value="0" />
+                           <p th:if="${#fields.hasErrors('gajiKotor')}" th:errors="*{gajiKotor}" th:class="text-red">Incorrect data</p>
+                        </div>
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('pph21')}? 'has-error'">
+                           <label>PPH21</label>
+                           <input type="number" id="pph" class="form-control" name="pph21" th:field="*{pph21}" value="0" />
+                           <p th:if="${#fields.hasErrors('pph21')}" th:errors="*{pph21}" th:class="text-red">Incorrect data</p>
+                        </div>
+                     </div>
+                     <div class="form-row">                        
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('jumlahPotongan')}? 'has-error'">
+                           <label>Jumlah Potongan</label>
+                           <input type="number" id="potongan" class="form-control" name="jumlahPotongan" th:field="*{jumlahPotongan}" value="0" />
+                           <p th:if="${#fields.hasErrors('jumlahPotongan')}" th:errors="*{jumlahPotongan}" th:class="text-red">Incorrect data</p>
+                        </div>
+                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('gajiBersih')}? 'has-error'">
+                           <label>Gaji netto</label>
+                           <input type="number" id="netto" class="form-control" name="gajiBersih" th:field="*{gajiBersih}" value="0" />
+                           <p th:if="${#fields.hasErrors('gajiBersih')}" th:errors="*{gajiBersih}" th:class="text-red">Incorrect data</p>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="box-footer">
+                     <button type="submit" class="btn btn-primary">Submit</button>	                    
+                  </div>
+               </form>
+            </div>
+            <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+      </div>
+   </body>
+</html>
