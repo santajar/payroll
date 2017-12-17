@@ -8,6 +8,6 @@ import com.penggajian.main.entity.Gaji;
 
 public interface GajiRepository extends JpaRepository<Gaji, Integer> {
 	
-	List<Gaji> findByPegawaiNip(int id);
+	List<Gaji> findBynoGaji(String gaji);
 
 }

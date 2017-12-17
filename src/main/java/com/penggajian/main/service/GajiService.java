@@ -30,9 +30,9 @@ public class GajiService {
 	}
 	
 	
-	public List<Gaji> findByone(Integer id) {
+	public List<Gaji> findByone(String id) {
 		
-		return  gajiRepository.findByPegawaiNip(id);
+		return  gajiRepository.findBynoGaji(id);
 		
 	}
 }

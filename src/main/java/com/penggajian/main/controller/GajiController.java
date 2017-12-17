@@ -1,11 +1,14 @@
 package com.penggajian.main.controller;
 
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +26,22 @@ import com.penggajian.main.service.GajiService;
 import com.penggajian.main.service.PegawaiService;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import net.sf.jasperreports.repo.InputStreamResource;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +113,8 @@ public class GajiController {
 
 	@RequestMapping(value="/trx", method=RequestMethod.POST)
 	public String createGaji(@Valid @ModelAttribute("gaji") Gaji gajiForm, BindingResult result, 
-			Model model, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpServletRequest request) throws IOException {
+			Model model, RedirectAttributes redirectAttributes, 
+			HttpServletResponse response, HttpServletRequest request,RedirectAttributes redirectAttrs) throws IOException, JRException  {
 		Pegawai pegawai = new Pegawai();
 		
 		
@@ -126,47 +141,82 @@ public class GajiController {
 		
 		Utility util = new Utility();
 		Map<String,Object> parameterMap = new HashMap<String,Object>();
-		List<Gaji> gaj = gajiService.findByone(nip);
+		List<Gaji> gaj = gajiService.findByone(gajiForm.getNoGaji());
+		
+		List<Gaji> all = new ArrayList<Gaji>();
+		
+		for (Gaji gaji : gaj) {
+			System.out.println("masuk "+gaji.getPasswordEnkrip().length());
+			  gajiBersih =  caesarEncript.decrypt(gaji.getGajiBersih(), gaji.getPasswordEnkrip().length());
+			  jumlahPotongan =  caesarEncript.decrypt(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip().length());
+			  gajiKotor =  caesarEncript.decrypt(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip().length());
+			  pph21 = caesarEncript.decrypt(gaji.getPph21(), gaji.getPasswordEnkrip().length());
+			  
+			  gaji.setGajiBersih(gajiBersih);
+			  gaji.setGajiKotor(gajiKotor);
+			  gaji.setJumlahPotongan(jumlahPotongan);
+			  gaji.setPph21(pph21);
+			  
+			  all.add(gaji);
+		}
+		
 		JRDataSource datasource = new JRBeanCollectionDataSource(gaj);
 		parameterMap.put("datasource", datasource);
 
-		File file = new ClassPathResource("reports/report.jrxml").getFile();
+		File file;
 		
-		String absoluteFile = file.getAbsolutePath();
-//				context.getRealPath("resources/reports/slipgaji.jrxml");
-//		String path = request.getRealPath("reports/slipgaji.jrxml");		
-
-		JasperPrint jasperPrint = util.getObjectPdf(absoluteFile, parameterMap, datasource);
-
-		Utility.sendPdfResponse(response, jasperPrint, "slip gaji");
+			file = new ClassPathResource("reports/slipgaji.jrxml").getFile();
+			String absoluteFile = file.getAbsolutePath();		
+		
+			JasperPrint jasperPrint = util.getObjectPdf(absoluteFile, parameterMap, datasource);		
+			
+		
+			Utility.sendPdfResponse(response, jasperPrint, "slip gaji");
+			
 		
 		
-		return "redirect:/trx";
+			return "send:redrect:/trx";
 	}
 	
 	@RequestMapping(path = "/pdf", method = RequestMethod.GET)
-    public ModelAndView report(HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public ModelAndView report(HttpServletResponse response, HttpServletRequest request) throws  JRException, IOException {
 		Utility util = new Utility();
 		Map<String,Object> parameterMap = new HashMap<String,Object>();
-		List<Gaji> gaj = gajiService.findByone(29);
+		List<Gaji> gaj = gajiService.findByone("298184fd-f0c4-86b8-409b-cfbd1525d786");
 		JRDataSource datasource = new JRBeanCollectionDataSource(gaj);
 		parameterMap.put("datasource", datasource);
 		
-		ServletContext context = request.getServletContext();
-        String appPath = context.getRealPath("");
-        System.out.println("appPath = " + appPath);
- 
-    
-		
-		File file = new ClassPathResource("reports/report.jrxml").getFile();
+		File file = new ClassPathResource("reports/slipgaji.jrxml").getFile();
 		
 		String absoluteFile = file.getAbsolutePath();
 //				context.getRealPath("resources/reports/slipgaji.jrxml");
 //		String path = request.getRealPath("reports/slipgaji.jrxml");		
 
 		JasperPrint jasperPrint = util.getObjectPdf(absoluteFile, parameterMap, datasource);
-
+		
 		Utility.sendPdfResponse(response, jasperPrint, "slip gaji");
+
+//		JRPdfExporter exporter = new JRPdfExporter();
+//		 
+//		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+//		exporter.setExporterOutput(
+//		  new SimpleOutputStreamExporterOutput("employeeReport.pdf"));
+//		 
+//		SimplePdfReportConfiguration reportConfig
+//		  = new SimplePdfReportConfiguration();
+//		reportConfig.setSizePageToContent(true);
+//		reportConfig.setForceLineBreakPolicy(false);
+//		 
+//		SimplePdfExporterConfiguration exportConfig
+//		  = new SimplePdfExporterConfiguration();
+//		exportConfig.setMetadataAuthor("baeldung");
+//		exportConfig.setEncrypted(true);
+//		exportConfig.setAllowedPermissionsHint("PRINTING");
+//		 
+//		exporter.setConfiguration(reportConfig);
+//		exporter.setConfiguration(exportConfig);
+//		 
+//		exporter.exportReport();
 		
 		return null;
         

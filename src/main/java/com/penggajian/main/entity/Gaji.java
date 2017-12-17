@@ -19,7 +19,7 @@ public class Gaji implements Serializable {
 
 	@Id
 	@Column(name="no_gaji")
-	private String no_gaji;
+	private String noGaji;
 
 	@Column(name="gaji_bersih")
 	private String gajiBersih;
@@ -47,12 +47,12 @@ public class Gaji implements Serializable {
 	public Gaji() {
 	}
 
-	public String getNo_gaji() {
-		return no_gaji;
+	public String getNoGaji() {
+		return noGaji;
 	}
 
-	public void setNo_gaji(String no_gaji) {
-		this.no_gaji = no_gaji;
+	public void setNoGaji(String noGaji) {
+		this.noGaji = noGaji;
 	}
 
 	public String getGajiBersih() {
@@ -113,7 +113,7 @@ public class Gaji implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Gaji [no_gaji=" + no_gaji + ", gajiBersih=" + gajiBersih + ", gajiKotor=" + gajiKotor
+		return "Gaji [no_gaji=" + noGaji + ", gajiBersih=" + gajiBersih + ", gajiKotor=" + gajiKotor
 				+ ", jumlahPotongan=" + jumlahPotongan + ", passwordEnkrip=" + passwordEnkrip + ", pph21=" + pph21
 				+ ", tanggal=" + tanggal + ", pegawai=" + pegawai + "]";
 	}
