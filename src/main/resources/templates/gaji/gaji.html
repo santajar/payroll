@@ -36,6 +36,7 @@
 								<th>Gaji Bersih</th>
 								<th>Potongan</th>
 								<th>pph21</th>
+								<th>Action</th>
 							</tr>
 							<tr th:each="gaji,iterStat : ${gaji}">
 								<td th:text="${iterStat.count}">1</td>
@@ -48,6 +49,9 @@
 								<td th:text="${#numbers.formatDecimal(gaji.gajiBersih,3,'POINT',2,'COMMA')}"></td>
 								<td th:text="${#numbers.formatDecimal(gaji.jumlahPotongan,3,'POINT',2,'COMMA')}"></td>
 								<td th:text="${#numbers.formatDecimal(gaji.pph21,3,'POINT',2,'COMMA')}"></td>
+								<td><a th:href="@{/pdf/{noGaji}(noGaji=${gaji.noGaji})}"
+									class="btn btn-sm btn-default"><i class="fa fa-download"></i>
+										Download</a></td>
 							</tr>
 
 						</table>
