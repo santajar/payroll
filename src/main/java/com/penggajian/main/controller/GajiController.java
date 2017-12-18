@@ -129,7 +129,8 @@ public class GajiController {
 	}
 	
 	@RequestMapping(path = "/pdf/{noGaji}", method = RequestMethod.GET)
-    public ModelAndView report(HttpServletResponse response, HttpServletRequest request,@PathVariable String noGaji) throws  JRException, IOException {
+    public ModelAndView report(HttpServletResponse response, HttpServletRequest request,
+    		@PathVariable String noGaji) throws  JRException, IOException {
 		
 		Utility util = new Utility();
 		Map<String,Object> parameterMap = new HashMap<String,Object>();
@@ -172,14 +173,23 @@ public class GajiController {
 	
 	@RequestMapping(value="/period", method=RequestMethod.GET)
 	public String Period(Model model)
-	{
-
-		
+	{		
 		return "report/period";
 	}
 	
-	
-
-   
+	@RequestMapping(value="/period", method=RequestMethod.POST)
+	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request,
+			@PathVariable("date") String date,@PathVariable("date1") String date1)
+	{	
+		List<Map<String,Object>> list = gajiService.findReport(date, date1);
+		
+		for (Map<String, Object> map : list) {
+		    for (Map.Entry<String, Object> entry : map.entrySet()) {
+		        System.out.println(entry.getKey() + " - " + entry.getValue());
+		    }
+		}
+		
+		return "report/period";
+	}   
 
 }
