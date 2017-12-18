@@ -170,6 +170,14 @@ public class GajiController {
 
     }
 	
+	@RequestMapping(value="/period", method=RequestMethod.GET)
+	public String Period(Model model)
+	{
+
+		
+		return "report/period";
+	}
+	
 	
 
    

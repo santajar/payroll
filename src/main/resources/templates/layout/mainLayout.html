@@ -110,7 +110,7 @@
             <li th:class="${CURRENT_MENU == 'Pegawai'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_PEGAWAI')"><a href="#" th:href="@{'/pegawai'}"><i class="fa fa-file"></i> <span>Pegawai</span></a></li>
             <li th:class="${CURRENT_MENU == 'Bank'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_BANK')"><a href="#" th:href="@{'/bank'}"><i class="fa fa-cart-arrow-down"></i> <span>Bank</span></a></li>
             <li th:class="${CURRENT_MENU == 'Gaji'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_GAJI')"><a href="#" th:href="@{'/trx'}"><i class="fa fa-smile-o"></i> <span>Gaji</span></a></li>
-            <li th:class="${CURRENT_MENU == 'Report'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_REPORT')"><a href="#" th:href="@{'/report'}"><i class="fa fa-file"></i> <span>Report</span></a></li>
+            <li th:class="${CURRENT_MENU == 'Report'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_REPORT')"><a href="#" th:href="@{'/period'}"><i class="fa fa-file"></i> <span>Report</span></a></li>
            <!--<li th:class="${CURRENT_MENU == 'Users'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_USERS')"><a href="#" th:href="@{'/users'}"><i class="fa fa-file"></i> <span>Users</span></a></li>
             
              <li th:class="${CURRENT_MENU == 'Products'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_PRODUCTS')"><a href="#" th:href="@{'/products'}"><i class="fa fa-file"></i> <span>Products</span></a></li>

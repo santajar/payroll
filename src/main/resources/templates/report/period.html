@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorator="layout/mainLayout">
+      
+      <head>
+        <title>Bank - New</title>
+    </head>
+    <body>
+        
+    	<div layout:fragment="content">
+	        
+              <div class="box box-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Report Period</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                 <div class="login-box-body">
+			        <form action="home" th:action="@{/login}" method="post">
+			          <div class="form-group col-xs-offset-4 col-xs-4">
+			            <input type="date" class="form-control" name="username" placeholder="Email"/>
+			          </div>
+			          <div class="form-group col-xs-offset-4 col-xs-4">
+			            <input type="date" class="form-control" name="password" placeholder="Password"/>
+			          </div>
+			          <div class="row">
+			            <div class="form-group col-xs-offset-4 col-xs-4">
+			              <button type="submit" class="btn btn-primary btn-block btn-flat" >Submit</button>
+			            </div>
+			          </div>
+			         
+			        </form>
+			        
+			      </div>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+    	</div>
+    	
+    </body>
+    
+</html>
