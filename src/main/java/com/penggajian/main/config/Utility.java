@@ -1,6 +1,6 @@
 package com.penggajian.main.config;
 
-import java.io.ByteArrayOutputStream;import java.io.File;import java.io.IOException;
+import java.io.ByteArrayOutputStream;import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;import javax.annotation.Resource;import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -21,7 +21,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;import net.sf.jasperreports.repo.InputStreamResource;import org.apache.log4j.Logger;import org.apache.tomcat.util.http.fileupload.IOUtils;import org.springframework.context.ApplicationContext;import org.springframework.context.support.FileSystemXmlApplicationContext;import org.springframework.http.HttpStatus;import org.springframework.http.ResponseEntity;
+import net.sf.jasperreports.engine.type.WhenNoDataTypeEnum;import org.apache.log4j.Logger;
 
 public class Utility{
 	
