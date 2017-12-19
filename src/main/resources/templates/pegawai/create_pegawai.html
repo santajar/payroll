@@ -38,6 +38,11 @@
                       <input type="text" class="form-control" name="npwp" th:field="*{npwp}" placeholder="Enter NPWP"/>
                       <p th:if="${#fields.hasErrors('npwp')}" th:errors="*{npwp}" th:class="text-red">Incorrect data</p>
                     </div>
+                     <div class="form-group" th:classappend="${#fields.hasErrors('nomor_rekening')}? 'has-error'">
+                      <label>Rekening</label>
+                      <input type="text" class="form-control" name="telpon" th:field="*{nomor_rekening}" placeholder="Enter nomor rekening"/>
+                      <p th:if="${#fields.hasErrors('nomor_rekening')}" th:errors="*{nomor_rekening}" th:class="text-red">Incorrect data</p>
+                    </div>  
                     <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
                       <label>Email</label>
                       <input type="text" class="form-control" name="email" th:field="*{email}" placeholder="Enter Email"/>

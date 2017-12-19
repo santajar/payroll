@@ -29,7 +29,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,8 +184,10 @@ public class GajiController {
 	
 	@RequestMapping(value="/period", method=RequestMethod.POST)
 	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request,
-			@PathVariable("date") String date,@PathVariable("date1") String date1)
-	{	
+			@RequestParam("date") String date,@RequestParam("date1") String date1)
+	{	 
+		System.out.println(date);
+		System.out.println(date1);
 		List<Map<String,Object>> list = nativeQuery.findReport(date, date1);
 		
 		for (Map<String, Object> map : list) {

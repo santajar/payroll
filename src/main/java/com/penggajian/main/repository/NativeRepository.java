@@ -11,7 +11,10 @@ import com.penggajian.main.entity.Gaji;
 
 public interface NativeRepository extends CrudRepository<Gaji, String> {
 	
-	@Query("SELECT p FROM Gaji p WHERE tanggal between :date and :date1")
+	@Query(nativeQuery=true, value="SELECT p.nama_pegawai, p.nomor_rekening, g.pph21, g.gaji_bersih, g.jumlah_potongan, YEAR(g.tanggal) as tanggal_gaji, MONTH(g.tanggal) as bulan "+ 
+			"from gaji g LEFT JOIN pegawai p ON "+
+			"g.pegawai_nip = p.nip "+
+			"WHERE g.tanggal BETWEEN :date AND :date1")
   public List<Map<String,Object>> findReport(@Param("date") String date,@Param("date1") String date1);
 
 }

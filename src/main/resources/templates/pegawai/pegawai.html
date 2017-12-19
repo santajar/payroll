@@ -27,20 +27,20 @@
 						<table class="table table-hover">
 							<tr>
 								<th style="width: 10px">No.</th>
-								<th>NIP</th>
 								<th>No Ktp</th>
 								<th>Nama Pegawai</th>
 								<th>NPWP</th>
+								<th>Rekening</th>
 								<th>Email</th>
 								<th>Telephone</th>
 								<th>Edit</th>
 							</tr>
 							<tr th:each="pegawai,iterStat : ${pegawai}">
 								<td th:text="${iterStat.count}">1</td>
-								<td th:text="${pegawai.nip}"></td>
 								<td th:text="${pegawai.no_ktp}"></td>
 								<td th:text="${pegawai.nama_pegawai}"></td>
 								<td th:text="${pegawai.npwp}"></td>
+								<td th:text="${pegawai.nomor_rekening}"></td>
 								<td th:text="${pegawai.email}"></td>
 								<td th:text="${pegawai.telpon}"></td>
 								<td><a th:href="@{/pegawai/{nip}(nip=${pegawai.nip})}"
