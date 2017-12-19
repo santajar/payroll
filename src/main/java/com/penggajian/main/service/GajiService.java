@@ -1,7 +1,6 @@
 package com.penggajian.main.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -35,10 +34,6 @@ public class GajiService {
 		
 		return  gajiRepository.findBynoGaji(id);
 		
-	}
+	}	
 	
-	public List<Map<String,Object>> findReport(String date, String date1){
-		
-		return gajiRepository.findReport(date,date1);
-	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.penggajian.main.entity.Pegawai;
+import com.penggajian.main.repository.NativeRepository;
 import com.penggajian.main.service.GajiService;
 import com.penggajian.main.service.PegawaiService;
 
@@ -45,6 +46,8 @@ public class GajiController {
 	private PegawaiService pegawaiService;
 	@Autowired
 	ServletContext context;
+	@Autowired
+	private NativeRepository nativeQuery;
 	
 	private static final String viewPrefix = "gaji/";
 	
@@ -181,7 +184,7 @@ public class GajiController {
 	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request,
 			@PathVariable("date") String date,@PathVariable("date1") String date1)
 	{	
-		List<Map<String,Object>> list = gajiService.findReport(date, date1);
+		List<Map<String,Object>> list = nativeQuery.findReport(date, date1);
 		
 		for (Map<String, Object> map : list) {
 		    for (Map.Entry<String, Object> entry : map.entrySet()) {
