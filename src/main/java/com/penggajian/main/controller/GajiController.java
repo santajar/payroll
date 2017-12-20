@@ -29,13 +29,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.penggajian.main.config.Utility;
 import com.penggajian.main.entity.Gaji;
 
@@ -46,10 +43,10 @@ public class GajiController {
 	private GajiService gajiService;
 	@Autowired
 	private PegawaiService pegawaiService;
+	@Autowired 
+	private NativeRepository nativeQuery;
 	@Autowired
 	ServletContext context;
-	@Autowired
-	private NativeRepository nativeQuery;
 	
 	private static final String viewPrefix = "gaji/";
 	
@@ -79,12 +76,12 @@ public class GajiController {
 	}
 	
 	@RequestMapping(value="/getValueNorek", method=RequestMethod.GET)
-	public @ResponseBody Integer getValue(@RequestParam("id") Integer id)
+	public @ResponseBody String getValue(@RequestParam("id") Integer id)
 	{
 		Pegawai pegawai = new Pegawai();
 		
 		pegawai = pegawaiService.getPegawaiID(id);
-		Integer rekpegawai = pegawai.getNomor_rekening();
+		String rekpegawai = pegawai.getNomor_rekening();
 		return rekpegawai;
 	}
 
@@ -187,8 +184,9 @@ public class GajiController {
 			@RequestParam("date") String date,@RequestParam("date1") String date1)
 	{	 
 		System.out.println(date);
-		System.out.println(date1);
-		List<Map<String,Object>> list = nativeQuery.findReport(date, date1);
+		System.out.println(date1);		
+		
+		List<Map<String,Object>> list = nativeQuery.findRport(date, date1);
 		
 		for (Map<String, Object> map : list) {
 		    for (Map.Entry<String, Object> entry : map.entrySet()) {

@@ -24,10 +24,10 @@ public class Pegawai implements Serializable {
 	private String nama_pegawai;
 
 	@Column(name="no_ktp")
-	private int no_ktp;
+	private String no_ktp;
 
 	@Column(name="nomor_rekening")
-	private int nomor_rekening;
+	private String nomor_rekening;
 
 	private String npwp;
 
@@ -62,21 +62,21 @@ public class Pegawai implements Serializable {
 
 	public void setNama_pegawai(String nama_pegawai) {
 		this.nama_pegawai = nama_pegawai;
-	}
+	}	
 
-	public int getNo_ktp() {
+	public String getNo_ktp() {
 		return no_ktp;
 	}
 
-	public void setNo_ktp(int no_ktp) {
+	public void setNo_ktp(String no_ktp) {
 		this.no_ktp = no_ktp;
 	}
 
-	public int getNomor_rekening() {
+	public String getNomor_rekening() {
 		return nomor_rekening;
 	}
 
-	public void setNomor_rekening(int nomor_rekening) {
+	public void setNomor_rekening(String nomor_rekening) {
 		this.nomor_rekening = nomor_rekening;
 	}
 

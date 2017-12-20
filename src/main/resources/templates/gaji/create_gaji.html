@@ -44,18 +44,32 @@
          $(document).ready(function() {
          	document.getElementById("kotor").defaultValue = "0";
          	document.getElementById("pph").disabled = true;
+         	document.getElementById("netto").disabled = true;
+         	var num1 = document.getElementById('pph').value;
              //this calculates values automatically 
-             sum();
-             $("#pph, #potongan, #kotor").on("keydown keyup", function() {
-                 sum();
-             });
+             alert("num1 "+num1);
+             if(num1 == null || num1 == ""){
+                 $(" #potongan, #kotor").on("keydown keyup", function() {
+                     sum();
+                 });
+             }else{
+                 $("#pph, #potongan, #kotor").on("keydown keyup", function() {
+                     sum();
+                 });
+             }
+             
          });
          
          function sum() {
                      var num1 = document.getElementById('pph').value;
                      var num2 = document.getElementById('potongan').value;
                      var num3 = document.getElementById('kotor').value;
-         			var result = parseInt(num3) - parseInt(num1) - parseInt(num2);
+                     if(num1 == null || num1 == ""){
+                    	 var result = parseInt(num3) - parseInt(num2);
+                     }else{
+                    	 var result = ((parseInt(num3) * parseInt(num1))/100) - parseInt(num2);
+                     }
+         			
                      if (!isNaN(result)) {
                          document.getElementById('netto').value = result;
                      }
