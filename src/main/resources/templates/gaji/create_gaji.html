@@ -44,10 +44,8 @@
          $(document).ready(function() {
          	document.getElementById("kotor").defaultValue = "0";
          	document.getElementById("pph").disabled = true;
-         	document.getElementById("netto").disabled = true;
          	var num1 = document.getElementById('pph').value;
              //this calculates values automatically 
-             alert("num1 "+num1);
              if(num1 == null || num1 == ""){
                  $(" #potongan, #kotor").on("keydown keyup", function() {
                      sum();
@@ -67,7 +65,7 @@
                      if(num1 == null || num1 == ""){
                     	 var result = parseInt(num3) - parseInt(num2);
                      }else{
-                    	 var result = ((parseInt(num3) * parseInt(num1))/100) - parseInt(num2);
+                    	 var result =parseInt(num3) - (((parseInt(num3) * parseInt(num1))/100) - parseInt(num2));
                      }
          			
                      if (!isNaN(result)) {
@@ -167,7 +165,7 @@
                         </div>
                         <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('gajiBersih')}? 'has-error'">
                            <label>Gaji netto</label>
-                           <input type="number" id="netto" class="form-control" name="gajiBersih" th:field="*{gajiBersih}" value="0" />
+                           <input type="number" id="netto" class="form-control" name="gajiBersih" th:field="*{gajiBersih}" />
                            <p th:if="${#fields.hasErrors('gajiBersih')}" th:errors="*{gajiBersih}" th:class="text-red">Incorrect data</p>
                         </div>
                      </div>
