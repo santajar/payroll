@@ -184,13 +184,32 @@ public class GajiController {
 			@RequestParam("date") String date,@RequestParam("date1") String date1)
 	{	 
 		System.out.println(date);
-		System.out.println(date1);		
+		System.out.println(date1);
 		
 		List<Map<String,Object>> list = nativeQuery.findRport(date, date1);
 		
+		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
+		
 		for (Map<String, Object> map : list) {
+		    	
+				Integer s = map.get("password_enkrip").toString().length(); 
+		    	String pph = caesarEncript.decrypt(map.get("pph21").toString().trim(), s);
+		    	String gajiBersih = caesarEncript.decrypt(map.get("gaji_bersih").toString().trim(), s);
+		    	String jmlPotong = caesarEncript.decrypt(map.get("jumlah_potongan").toString().trim(), s);
+		    	
+		    	map.put("pph21", pph);
+		    	map.put("gaji_bersih", gajiBersih);
+		    	map.put("jumlah_potongan", jmlPotong);
+		    	
+		    	mapList.add(map);
+		    	
+		    
+		}
+		
+		for (Map<String, Object> map : mapList) {
 		    for (Map.Entry<String, Object> entry : map.entrySet()) {
-		        System.out.println(entry.getKey() + " - " + entry.getValue());
+		    	
+		        System.out.println("List 2 : "+entry.getKey() + " - " + entry.getValue());
 		    }
 		}
 		

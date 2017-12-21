@@ -71,7 +71,7 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" th:href="@{/myAccount}" class="btn btn-default btn-flat">Profile</a>
+                      <!--  <a href="#" th:href="@{/myAccount}" class="btn btn-default btn-flat">Profile</a>-->
                     </div>
                     <div class="pull-right">
                       <a href="logout" th:href="@{/logout}" class="btn btn-default btn-flat">Sign out</a>
@@ -108,7 +108,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li th:class="${CURRENT_MENU == 'Home'}? 'active' : ''" ><a href="#" th:href="@{'/home'}"><i class="fa fa-home"></i> <span>Home</span></a></li>
             <li th:class="${CURRENT_MENU == 'Pegawai'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_PEGAWAI')"><a href="#" th:href="@{'/pegawai'}"><i class="fa fa-file"></i> <span>Pegawai</span></a></li>
-            <li th:class="${CURRENT_MENU == 'Bank'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_BANK')"><a href="#" th:href="@{'/bank'}"><i class="fa fa-cart-arrow-down"></i> <span>Bank</span></a></li>
+            <!--  <li th:class="${CURRENT_MENU == 'Bank'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_BANK')"><a href="#" th:href="@{'/bank'}"><i class="fa fa-cart-arrow-down"></i> <span>Bank</span></a></li>-->
             <li th:class="${CURRENT_MENU == 'Gaji'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_GAJI')"><a href="#" th:href="@{'/trx'}"><i class="fa fa-smile-o"></i> <span>Gaji</span></a></li>
             <li th:class="${CURRENT_MENU == 'Report'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_REPORT')"><a href="#" th:href="@{'/period'}"><i class="fa fa-file"></i> <span>Report</span></a></li>
            <!--<li th:class="${CURRENT_MENU == 'Users'}? 'active' : ''"  sec:authorize="hasRole('ROLE_MANAGE_USERS')"><a href="#" th:href="@{'/users'}"><i class="fa fa-file"></i> <span>Users</span></a></li>
