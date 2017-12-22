@@ -88,7 +88,7 @@
 								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.gajiKotor)} == true ? ${#numbers.formatDecimal(gaji.gajiKotor,3,'POINT',2,'COMMA')} : ${gaji.gajiKotor}"></td>
 								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.gajiBersih)} == true ? ${#numbers.formatDecimal(gaji.gajiBersih,3,'POINT',2,'COMMA')} : ${gaji.gajiBersih}"></td>
 								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.jumlahPotongan)}  == true ? ${#numbers.formatDecimal(gaji.jumlahPotongan,3,'POINT',2,'COMMA')} : ${gaji.jumlahPotongan}"></td>
-								<td th:text="${gaji.pph21}"> </td>
+								<td th:text="${gaji.pph21} + ' %'"> </td>
 								<td><a th:href="@{/pdf/{noGaji}(noGaji=${gaji.noGaji})}"
 									class="btn btn-sm btn-default"><i class="fa fa-download"></i>
 										Download</a></td>
