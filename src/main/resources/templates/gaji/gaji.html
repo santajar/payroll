@@ -15,7 +15,7 @@
     			        url : "/getData",
     			        data : {password:$('#password').val()},
     			        success : function(data) {
-    			        	//alert(data);
+    			        	alert("Data Will be changes");
     			        	$("#example2").html(data);
     			        	$("#example2").DataTable({
     			        		extend: 'csvHtml5',
