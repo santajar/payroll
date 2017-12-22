@@ -6,7 +6,37 @@
 
 <head>
 <title>Gaji</title>
- </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+         $(document).ready(function() {
+        	 $(".cari").on('click',function(event){
+    		    	$.ajax({
+    			        type:"GET",
+    			        url : "/getData",
+    			        data : {password:$('#password').val()},
+    			        success : function(data) {
+    			        	//alert(data);
+    			        	$("#example2").html(data);
+    			        	$("#example2").DataTable({
+    			        		extend: 'csvHtml5',
+    			             	text: 'Copy all data',
+    			             	exportOptions: {
+    			                 	modifier: {
+    			                    	 search: 'none'
+    			                 	}
+    			             }
+    			        	});
+    			        },
+    			        
+    			        error: function() {
+    			            alert('Error occured');
+    			        }
+    			    });
+    		    });
+    	             
+         });
+</script>
+</head>
 <body>
 
 	<div layout:fragment="content">
@@ -24,7 +54,17 @@
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body table-responsive no-padding">
-						<table class="table table-hover">
+					<div class="box-body">
+						<input type="password" class="form-group col-md-4" id="password" name="password" placeholder="Enter Password" />
+						<div class="box-tools">
+							<div class="input-group">
+								<a class="btn btn-sm btn-default cari"  style="margin-left:5px"><i
+									class="fa fa-plus-circle"></i>Dekrip</a>
+							</div>
+						</div>
+					</div>
+					<div  id="dvData" th:fragment="resultsList">
+						<table id="example2" class="table table-hover">
 							<tr>
 								<th style="width: 10px">No.</th>
 								<th>No Gaji</th>
@@ -38,23 +78,24 @@
 								<th>pph21</th>
 								<th>Action</th>
 							</tr>
-							<tr th:each="gaji,iterStat : ${gaji}">
+							<tr id="coba" th:each="gaji,iterStat : ${gaji}">
 								<td th:text="${iterStat.count}">1</td>
 								<td th:text="${gaji.noGaji}"></td>
 								<td th:text="${gaji.pegawai.nip}" id="pegawaiID"></td>
 								<td th:text="${gaji.pegawai.nama_pegawai}" id="nama"></td>
 								<td th:text="${gaji.pegawai.nomor_rekening}" id="rekening"></td>
 								<td th:text="${#dates.format(gaji.tanggal, 'yyyy-MM-dd')}"></td>
-								<td th:text="${#numbers.formatDecimal(gaji.gajiKotor,3,'POINT',2,'COMMA')}"></td>
-								<td th:text="${#numbers.formatDecimal(gaji.gajiBersih,3,'POINT',2,'COMMA')}"></td>
-								<td th:text="${#numbers.formatDecimal(gaji.jumlahPotongan,3,'POINT',2,'COMMA')}"></td>
-								<td th:text="${#numbers.formatDecimal(gaji.pph21,3,'POINT',2,'COMMA')}"></td>
+								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.gajiKotor)} == true ? ${#numbers.formatDecimal(gaji.gajiKotor,3,'POINT',2,'COMMA')} : ${gaji.gajiKotor}"></td>
+								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.gajiBersih)} == true ? ${#numbers.formatDecimal(gaji.gajiBersih,3,'POINT',2,'COMMA')} : ${gaji.gajiBersih}"></td>
+								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.jumlahPotongan)}  == true ? ${#numbers.formatDecimal(gaji.jumlahPotongan,3,'POINT',2,'COMMA')} : ${gaji.jumlahPotongan}"></td>
+								<td th:text="${gaji.pph21}"> </td>
 								<td><a th:href="@{/pdf/{noGaji}(noGaji=${gaji.noGaji})}"
 									class="btn btn-sm btn-default"><i class="fa fa-download"></i>
 										Download</a></td>
 							</tr>
 
 						</table>
+					</div>
 					</div>
 
 				</div>

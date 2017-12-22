@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.penggajian.main.entity.Pegawai;
 import com.penggajian.main.repository.NativeRepository;
@@ -53,9 +55,19 @@ public class GajiController {
 	@RequestMapping(value="/trx", method=RequestMethod.GET)
 	public String Gaji(Model model)
 	{
-		List<Gaji> all = new ArrayList<Gaji>();
+//		List<Gaji> all = new ArrayList<Gaji>();
 		List<Gaji> gaj = gajiService.FindAll();
 		model.addAttribute("pegawai", pegawaiService.FindAll());
+		
+		model.addAttribute("gaji", gaj);		
+		return viewPrefix+"gaji";
+	}
+		
+	@GetMapping("/getData")
+	public ModelAndView getExportdata(@RequestParam("password") String password){
+		
+		List<Gaji> all = new ArrayList<Gaji>();
+		List<Gaji> gaj = gajiService.FindAll();
 		
 		for (Gaji gaji : gaj) {
 			System.out.println("masuk "+gaji.getPasswordEnkrip().length());
@@ -71,8 +83,11 @@ public class GajiController {
 			  
 			  all.add(gaji);
 		}
-		model.addAttribute("gaji", all);		
-		return viewPrefix+"gaji";
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("gaji", all);
+		modelAndView.setViewName("gaji/gaji :: resultsList");
+		return modelAndView;
 	}
 	
 	@RequestMapping(value="/getValueNorek", method=RequestMethod.GET)
