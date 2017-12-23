@@ -126,12 +126,15 @@ public class GajiController {
 		String gb = request.getParameter("gajiBersih");
 		String gk = request.getParameter("gajiKotor");
 		String pp = request.getParameter("pph21");
+		String pass = request.getParameter("passwordEnkrip").toUpperCase();
 		Integer ps = request.getParameter("passwordEnkrip").length();
 		
-		  String gajiBersih =  caesarEncript.encrypt(gb, ps);
-		  String jumlahPotongan =  caesarEncript.encrypt(jp, ps);
-		  String gajiKotor =  caesarEncript.encrypt(gk, ps);
-		  String pph21 = caesarEncript.encrypt(pp, ps);
+		  String password = caesarEncript.encrypt(pass, ps);
+		  String gajiBersih =  vigen.encipher(gb, password);
+		  String jumlahPotongan =  vigen.encipher(jp, password);
+		  String gajiKotor =  vigen.encipher(gk, password);
+		  String pph21 = vigen.encipher(pp, password);
+		  
 		  
 		pegawai = pegawaiService.getPegawaiID(nip);
 		gajiForm.setJumlahPotongan(jumlahPotongan);
@@ -139,6 +142,7 @@ public class GajiController {
 		gajiForm.setGajiKotor(gajiKotor);
 		gajiForm.setPph21(pph21);
 		gajiForm.setPegawai(pegawai);
+		gajiForm.setPasswordEnkrip(password);
 		gajiService.createGaji(gajiForm);
 		redirectAttributes.addFlashAttribute("info", "Gaji created successfully");
 		
