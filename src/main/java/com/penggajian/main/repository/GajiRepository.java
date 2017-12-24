@@ -9,6 +9,7 @@ import com.penggajian.main.entity.Gaji;
 public interface GajiRepository extends JpaRepository<Gaji, Integer> {
 	
 	List<Gaji> findBynoGaji(String gaji);
+	List<Gaji> findBypasswordEnkrip(String password);
 	
 	
 

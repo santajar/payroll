@@ -11,7 +11,7 @@ public class vigen {
     public static String encipher(String s, String key){
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < s.length(); i ++){
-            if(s.charAt(i) < 48 || s.charAt(i) > 90){ //ASCII character (capital letter)
+            if(s.charAt(i) < 33 || s.charAt(i) > 90){ //ASCII character (capital letter)
                 throw new IllegalArgumentException("" +
                         "Open text must contain only capital letters");
             }
@@ -30,12 +30,12 @@ public class vigen {
     public static String decipher(String s, String key){
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < s.length(); i ++){
-            if(s.charAt(i) < 48 || s.charAt(i) > 90){ //ASCII character (capital letter)
+            if(s.charAt(i) < 33 || s.charAt(i) > 90){ //ASCII character (capital letter)
                 throw new IllegalArgumentException("" +
                         "Ciphertext must contain only capital letters");
             }
             //subtract shift modularly
-            char decyphered = s.charAt(i) - getShift(key, i) < 48 ? (char)((s.charAt(i) - getShift(key, i)) + 26) : (char)(s.charAt(i) - getShift(key, i));
+            char decyphered = s.charAt(i) - getShift(key, i) < 33 ? (char)((s.charAt(i) - getShift(key, i)) + 26) : (char)(s.charAt(i) - getShift(key, i));
             builder.append(decyphered);
         }
         return builder.toString();
@@ -47,16 +47,16 @@ public class vigen {
      * @return shift
      */
     private static int getShift(String key, int i) {
-            if(key.charAt(i % key.length()) < 48 || key.charAt(i % key.length()) > 90){
+            if(key.charAt(i % key.length()) < 33 || key.charAt(i % key.length()) > 90){
                 throw new IllegalArgumentException("" +
                         "Key phrase must contain only capital letters");
             }
-        return ((int)key.charAt(i % key.length())) - 48;
+        return ((int)key.charAt(i % key.length())) - 33;
     }
     
     public static void main(String[] args){
         String text = "4000000";
-        String key = "CAT";
+        String key = "!V@SHA";
         String enciphered = encipher(text, key);
         System.out.println(enciphered);
         System.out.println(decipher(enciphered, key));

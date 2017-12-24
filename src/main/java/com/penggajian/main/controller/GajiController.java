@@ -64,28 +64,39 @@ public class GajiController {
 	}
 		
 	@GetMapping("/getData")
-	public ModelAndView getExportdata(@RequestParam("password") String password){
-		
-		List<Gaji> all = new ArrayList<Gaji>();
-		List<Gaji> gaj = gajiService.FindAll();
-		
-		for (Gaji gaji : gaj) {
-			System.out.println("masuk "+gaji.getPasswordEnkrip().length());
-			  String gajiBersih =  caesarEncript.decrypt(gaji.getGajiBersih(), gaji.getPasswordEnkrip().length());
-			  String jumlahPotongan =  caesarEncript.decrypt(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip().length());
-			  String gajiKotor =  caesarEncript.decrypt(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip().length());
-			  String pph21 = caesarEncript.decrypt(gaji.getPph21(), gaji.getPasswordEnkrip().length());
-			  
-			  gaji.setGajiBersih(gajiBersih);
-			  gaji.setGajiKotor(gajiKotor);
-			  gaji.setJumlahPotongan(jumlahPotongan);
-			  gaji.setPph21(pph21);
-			  
-			  all.add(gaji);
-		}
+	public ModelAndView getExportdata(@RequestParam("password") String password, RedirectAttributes redirectAttributes){
 		
 		ModelAndView modelAndView = new ModelAndView();
+		String pass = caesarEncript.encrypt(password.toUpperCase(), password.length());
+		List<Gaji> all = new ArrayList<Gaji>();
+		List<Gaji> gaj = gajiService.findBypassword(pass);
+		
+		if(gaj.isEmpty()){
+			
+
+			redirectAttributes.addFlashAttribute("info", "No data");
+			
+		}else{
+			
+			for (Gaji gaji : gaj) {
+				  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), pass);
+				  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), pass);
+				  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), pass);
+				  String pph21 = vigen.decipher(gaji.getPph21(), pass);
+				  
+				  gaji.setGajiBersih(gajiBersih);
+				  gaji.setGajiKotor(gajiKotor);
+				  gaji.setJumlahPotongan(jumlahPotongan);
+				  gaji.setPph21(pph21);
+				  
+				  all.add(gaji);
+			}	
+			
+			
+		}
+		
 		modelAndView.addObject("gaji", all);
+		
 		modelAndView.setViewName("gaji/gaji :: resultsList");
 		return modelAndView;
 	}
@@ -129,7 +140,7 @@ public class GajiController {
 		String pass = request.getParameter("passwordEnkrip").toUpperCase();
 		Integer ps = request.getParameter("passwordEnkrip").length();
 		
-		  String password = caesarEncript.encrypt(pass, ps);
+		  String password = caesarEncript.encrypt(pass.toUpperCase(), ps);
 		  String gajiBersih =  vigen.encipher(gb, password);
 		  String jumlahPotongan =  vigen.encipher(jp, password);
 		  String gajiKotor =  vigen.encipher(gk, password);
@@ -157,14 +168,16 @@ public class GajiController {
 		Map<String,Object> parameterMap = new HashMap<String,Object>();
 		List<Gaji> gaj = gajiService.findByone(noGaji);
 		
+		
+		
 		List<Gaji> all = new ArrayList<Gaji>();
 		
 		for (Gaji gaji : gaj) {
-			System.out.println("masuk "+gaji.getPasswordEnkrip().length());
-			  String gajiBersih =  caesarEncript.decrypt(gaji.getGajiBersih(), gaji.getPasswordEnkrip().length());
-			  String jumlahPotongan =  caesarEncript.decrypt(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip().length());
-			  String gajiKotor =  caesarEncript.decrypt(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip().length());
-			  String pph21 = caesarEncript.decrypt(gaji.getPph21(), gaji.getPasswordEnkrip().length());
+//			String pass = caesarEncript.decrypt(gaji.getPasswordEnkrip(), gaji.getPasswordEnkrip().length());
+			  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPasswordEnkrip());
+			  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip());
+			  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip());
+			  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPasswordEnkrip());
 			  
 			  gaji.setGajiBersih(gajiBersih);
 			  gaji.setGajiKotor(gajiKotor);

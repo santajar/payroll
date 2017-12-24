@@ -35,5 +35,10 @@ public class GajiService {
 		
 	}
 	
+	public List<Gaji> findBypassword(String password){
+		
+		return gajiRepository.findBypasswordEnkrip(password);
+	}
+	
 	
 }
