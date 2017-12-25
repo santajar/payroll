@@ -15,6 +15,7 @@
     			        url : "/getData",
     			        data : {password:$('#password').val()},
     			        success : function(data) {
+    			        	 console.log('my message' + data);
     			        	alert("Data Will be changes");
     			        	$("#example2").html(data);
     			        	$("#example2").DataTable({
@@ -53,13 +54,14 @@
 						</div>
 					</div>
 					<!-- /.box-header -->
+					
 					<div class="box-body table-responsive no-padding">
 					<div class="box-body">
 						<input type="password" class="form-group col-md-4" id="password" name="password"  />
 						<div class="box-tools">
 							<div class="input-group">
 								<a class="btn btn-sm btn-default cari"  style="margin-left:5px"><i
-									class="fa fa-plus-circle"></i>Dekrip</a>
+									class="fa fa-plus-circle" style="margin-right:2px"></i>Dekrip</a>
 							</div>
 						</div>
 					</div>

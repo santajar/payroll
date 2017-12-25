@@ -64,6 +64,7 @@ public class GajiController {
 	}
 		
 	@GetMapping("/getData")
+	@ResponseBody
 	public ModelAndView getExportdata(@RequestParam("password") String password, RedirectAttributes redirectAttributes){
 		
 		ModelAndView modelAndView = new ModelAndView();
@@ -71,12 +72,6 @@ public class GajiController {
 		List<Gaji> all = new ArrayList<Gaji>();
 		List<Gaji> gaj = gajiService.findBypassword(pass);
 		
-		if(gaj.isEmpty()){
-			
-
-			redirectAttributes.addFlashAttribute("info", "No data");
-			
-		}else{
 			
 			for (Gaji gaji : gaj) {
 				  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), pass);
@@ -92,12 +87,10 @@ public class GajiController {
 				  all.add(gaji);
 			}	
 			
-			
-		}
-		
 		modelAndView.addObject("gaji", all);
 		
 		modelAndView.setViewName("gaji/gaji :: resultsList");
+		
 		return modelAndView;
 	}
 	
