@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.penggajian.main.config.Utility;
 import com.penggajian.main.entity.Gaji;
 
@@ -159,9 +160,7 @@ public class GajiController {
 		
 		Utility util = new Utility();
 		Map<String,Object> parameterMap = new HashMap<String,Object>();
-		List<Gaji> gaj = gajiService.findByone(noGaji);
-		
-		
+		List<Gaji> gaj = gajiService.findByone(noGaji);		
 		
 		List<Gaji> all = new ArrayList<Gaji>();
 		
@@ -240,5 +239,37 @@ public class GajiController {
 		
 		return "report/period";
 	}   
+	
+	@RequestMapping(value = { "/tes" }, method = RequestMethod.GET)
+	 public @ResponseBody List<Gaji> userFindAll() {
+
+
+			List<Gaji> gaj = gajiService.findByone("d953b48c-052d-5faf-3330-cdf6c96b44ca");
+			List<Gaji> all = new ArrayList<Gaji>();
+			
+			for (Gaji gaji : gaj) {
+//				String pass = caesarEncript.decrypt(gaji.getPasswordEnkrip(), gaji.getPasswordEnkrip().length());
+				  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPasswordEnkrip());
+				  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip());
+				  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip());
+				  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPasswordEnkrip());
+				  
+				  gaji.setGajiBersih(gajiBersih);
+				  gaji.setGajiKotor(gajiKotor);
+				  gaji.setJumlahPotongan(jumlahPotongan);
+				  gaji.setPph21(pph21);
+				  
+				  all.add(gaji);
+			}
+
+		
+//			Gson gson = new Gson();
+//			String test = gson.toJson(response);
+//			System.out.println(test);
+
+			return all;
+
+	    }
+
 
 }

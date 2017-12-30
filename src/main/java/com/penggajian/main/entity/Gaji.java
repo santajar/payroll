@@ -39,6 +39,7 @@ public class Gaji implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date tanggal;
 
+	
 	//bi-directional many-to-one association to Pegawai
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinColumn(name = "pegawai_nip", updatable = false)

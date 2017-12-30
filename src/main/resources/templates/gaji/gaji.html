@@ -9,15 +9,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
          $(document).ready(function() {
+        	 $('#download').attr("disabled", true);
+        	 $('a').each(function(){
+        		    $(this).data("href", $(this).attr("href")).removeAttr("href");
+        	 });
         	 $(".cari").on('click',function(event){
     		    	$.ajax({
     			        type:"GET",
     			        url : "/getData",
     			        data : {password:$('#password').val()},
+    			      
     			        success : function(data) {
     			        	 console.log('my message' + data);
     			        	alert("Data Will be changes");
     			        	$("#example2").html(data);
+	   			        	$('#download').attr("disabled", false);
+	   			        	$('a').each(function(){
+	   			        		$(this).attr("href", $(this).data("href"));
+	   			        	});
     			        	$("#example2").DataTable({
     			        		extend: 'csvHtml5',
     			             	text: 'Copy all data',
@@ -91,7 +100,7 @@
 								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.gajiBersih)} == true ? ${#numbers.formatDecimal(gaji.gajiBersih,3,'POINT',2,'COMMA')} : ${gaji.gajiBersih}"></td>
 								<td th:text="${T(org.apache.commons.lang3.StringUtils).isNumeric(gaji.jumlahPotongan)}  == true ? ${#numbers.formatDecimal(gaji.jumlahPotongan,3,'POINT',2,'COMMA')} : ${gaji.jumlahPotongan}"></td>
 								<td th:text="${gaji.pph21} + ' %'"> </td>
-								<td><a th:href="@{/pdf/{noGaji}(noGaji=${gaji.noGaji})}"
+								<td><a id="download" th:href="@{/pdf/{noGaji}(noGaji=${gaji.noGaji})}"
 									class="btn btn-sm btn-default"><i class="fa fa-download"></i>
 										Download</a></td>
 							</tr>
