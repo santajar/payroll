@@ -4,10 +4,48 @@
       layout:decorator="layout/mainLayout">
       
       <head>
-        <title>Bank - New</title>
+        <title>Report - New</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+        
+       <script type="text/javascript">
+	        $(document).ready(function() {
+	        	$("#btnId").click(function(event){
+	                event.preventDefault();
+	                
+	                bootbox.prompt({
+		                title: "password input!",
+		                inputType: 'password',
+		                callback: function (result) {
+		                	ajaxGet(result);
+		                }
+		            });
+	                
+	        	})	           
+	            
+	            // DO GET
+	            function ajaxGet(result){
+	                $.ajax({
+	                    type : "POST",
+	                    url : "/period",
+	                    data : {password:result,date:$("#date").val(),date1:$("#date1").val()},
+	                    success: function(data){
+	                    	// fill data to Modal Body
+	                        alert("report will be download")
+	                    },
+	                    error : function(e) {
+	                    	console.log(e);
+	                    }
+	                }); 
+	            }
+	    	             
+	         });
+    	</script>
+        
     </head>
     <body>
-        
+       
     	<div layout:fragment="content">
 	        
               <div class="box box-warning">
@@ -16,24 +54,23 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                  <div class="login-box-body">
-			        <form action="home" th:action="@{/period}" method="post">
+			        <form method="POST">
 			          <div class="form-group col-xs-offset-4 col-xs-4">
-			            <input type="date" class="form-control" name="date"  data-date-format="yyyy-MM-dd"/>
+			            <input type="date" id="date" class="form-control" name="date"  data-date-format="yyyy-MM-dd"/>
 			          </div>
 			          <div class="form-group col-xs-offset-4 col-xs-4">
-			            <input type="date" class="form-control" name="date1"  data-date-format="yyyy-MM-dd"/>
+			            <input type="date" id="date1" class="form-control" name="date1"  data-date-format="yyyy-MM-dd"/>
 			          </div>
 			          <div class="row">
 			            <div class="form-group col-xs-offset-4 col-xs-4">
-			              <button type="submit" class="btn btn-primary btn-block btn-flat" >Submit</button>
+			              <button type="button" class="btn btn-info btn-lg" id="btnId">Submit</button>
 			            </div>
-			          </div>
-			         
-			        </form>
-			        
+			          </div>			         
+			        </form>			        
 			      </div>
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
+              
     	</div>
     	
     </body>

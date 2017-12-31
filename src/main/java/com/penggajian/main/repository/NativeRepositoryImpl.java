@@ -22,15 +22,16 @@ public class NativeRepositoryImpl implements NativeRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Map<String, Object>> findRport(String date, String date1) {
+	public List<Map<String, Object>> findRport(String date, String date1, String password) {
 		// TODO Auto-generated method stub
 		Session ss = sessionFactory.getCurrentSession();
 		Query q = ss.createSQLQuery("SELECT p.nama_pegawai, p.nomor_rekening,g.password_enkrip, g.pph21, g.gaji_bersih, g.jumlah_potongan, YEAR(g.tanggal) as tanggal_gaji, MONTH(g.tanggal) as bulan "+ 
 			"from gaji g LEFT JOIN pegawai p ON "+
 			"g.pegawai_nip = p.nip "+
-			"WHERE g.tanggal BETWEEN :date AND :date1");
+			"WHERE g.password_enkrip =:password AND g.tanggal BETWEEN :date AND :date1");
 		q.setParameter("date1", date1);
 		q.setParameter("date", date);
+		q.setParameter("password", password);
 		q.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 		List<Map<String,Object>> aliasToValueMapList=q.list();
 		System.out.println(aliasToValueMapList);

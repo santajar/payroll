@@ -204,22 +204,25 @@ public class GajiController {
 	}
 	
 	@RequestMapping(value="/period", method=RequestMethod.POST)
-	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request,
-			@RequestParam("date") String date,@RequestParam("date1") String date1)
+	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request)
 	{	 
-		System.out.println(date);
-		System.out.println(date1);
+		String date = request.getParameter("date");
+		String date1 = request.getParameter("date1");
+		String pass = request.getParameter("password");
+		String password = caesarEncript.encrypt(pass.toUpperCase(), pass.length());
+//		System.out.println(date);
+//		System.out.println(date1);
+//		System.out.println(password);
 		
-		List<Map<String,Object>> list = nativeQuery.findRport(date, date1);
+		List<Map<String,Object>> list = nativeQuery.findRport(date, date1, password);
 		
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
 		for (Map<String, Object> map : list) {
 		    	
-				Integer s = map.get("password_enkrip").toString().length(); 
-		    	String pph = caesarEncript.decrypt(map.get("pph21").toString().trim(), s);
-		    	String gajiBersih = caesarEncript.decrypt(map.get("gaji_bersih").toString().trim(), s);
-		    	String jmlPotong = caesarEncript.decrypt(map.get("jumlah_potongan").toString().trim(), s);
+		    	String pph = vigen.decipher(map.get("pph21").toString().trim(), password);
+		    	String gajiBersih = vigen.decipher(map.get("gaji_bersih").toString().trim(), password);
+		    	String jmlPotong = vigen.decipher(map.get("jumlah_potongan").toString().trim(), password);
 		    	
 		    	map.put("pph21", pph);
 		    	map.put("gaji_bersih", gajiBersih);
