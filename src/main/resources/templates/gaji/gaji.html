@@ -9,9 +9,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
          $(document).ready(function() {
-        	 $('#download').attr("disabled", true);
-        	 $('a').each(function(){
+        	 
+        	 $('td > a').each(function(){
         		    $(this).data("href", $(this).attr("href")).removeAttr("href");
+        		    $(this).attr("disabled", true);
         	 });
         	 $(".cari").on('click',function(event){
     		    	$.ajax({
@@ -24,8 +25,9 @@
     			        	alert("Data Will be changes");
     			        	$("#example2").html(data);
 	   			        	$('#download').attr("disabled", false);
-	   			        	$('a').each(function(){
+	   			        	$('td > a').each(function(){
 	   			        		$(this).attr("href", $(this).data("href"));
+	   			        	 	$(this).attr("disabled", false);
 	   			        	});
     			        	$("#example2").DataTable({
     			        		extend: 'csvHtml5',
