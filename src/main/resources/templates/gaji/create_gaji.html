@@ -27,6 +27,26 @@
                  }
              });
          });
+          
+          $('#tanggal').change(function() {
+              
+              var tgl = $('#tanggal').val();
+              alert(tgl);
+            	//console.log("ini "+pegawaiIDS);
+                $.ajax({
+                    type:"GET",
+                    url : "/getValuepass",
+                    data : { id: tgl },
+                    success : function(data) {				        	
+                        $("#passwordEnkrip").val(data);
+                    },
+                    
+                    error: function(e) {
+                    	/* console.log(e.message);
+                        alert(e.message);  */
+                    }
+                });
+            });
          });
          
          function guid() {
@@ -128,7 +148,7 @@
                      </div>
                      <div class="col-md-6" th:classappend="${#fields.hasErrors('tanggal')}? 'has-error'">
                         <label>Create Date</label>
-                        <input type="date" class="form-control" data-date-format="yyyy-MM-dd"  name="tanggal" th:field="*{tanggal}" placeholder="Enter Date"/>
+                        <input type="date" id="tanggal" class="form-control" data-date-format="yyyy-MM-dd"  name="tanggal" th:field="*{tanggal}" placeholder="Enter Date"/>
                         <p th:if="${#fields.hasErrors('tanggal')}" th:errors="tanggal" th:class="text-red">Incorrect data</p>
                      </div>
                      <div class="form-row">
@@ -139,7 +159,7 @@
                         </div>
                         <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('passwordEnkrip')}? 'has-error'">
                            <label>Password</label>
-                           <input type="password" class="form-control" name="passwordEnkrip" th:field="*{passwordEnkrip}" maxlength="25" placeholder="Enter Password Enkrip"/>
+                           <input type="password" id="passwordEnkrip" class="form-control" name="passwordEnkrip" th:field="*{passwordEnkrip}" maxlength="25" placeholder="Enter Password Enkrip"/>
                            <p th:if="${#fields.hasErrors('passwordEnkrip')}" th:errors="*{passwordEnkrip}" th:class="text-red">Incorrect data</p>
                         </div>
                      </div>
