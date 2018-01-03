@@ -37,13 +37,13 @@ public class GajiService {
 	
 	public List<Gaji> findByonewithPass(String id, String password) {
 		
-		return  gajiRepository.findBynoGajiInAndPasswordEnkrip(id, password);
+		return  gajiRepository.findBynoGajiInAndPasswordPasswordEnkrip(id, password);
 		
 	}
 	
 	public List<Gaji> findBypassword(String password){
 		
-		return gajiRepository.findBypasswordEnkrip(password);
+		return gajiRepository.findByPasswordPasswordEnkrip(password);
 	}
 	
 	

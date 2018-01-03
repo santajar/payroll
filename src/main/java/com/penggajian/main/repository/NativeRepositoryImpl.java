@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.penggajian.main.entity.Password;
+
 
 
 @Service
@@ -39,6 +41,7 @@ public class NativeRepositoryImpl implements NativeRepository {
 		return aliasToValueMapList;
 	}
 
+	
 	
 
 	

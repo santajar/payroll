@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.penggajian.main.entity.Pegawai;
 import com.penggajian.main.repository.NativeRepository;
 import com.penggajian.main.service.GajiService;
+import com.penggajian.main.service.PasswordService;
 import com.penggajian.main.service.PegawaiService;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -38,6 +39,7 @@ import java.util.Map;
 
 import com.penggajian.main.config.Utility;
 import com.penggajian.main.entity.Gaji;
+import com.penggajian.main.entity.Password;
 
 @Controller
 public class GajiController {
@@ -46,6 +48,9 @@ public class GajiController {
 	private GajiService gajiService;
 	@Autowired
 	private PegawaiService pegawaiService;
+	
+	@Autowired private PasswordService passwordService;
+	
 	@Autowired 
 	private NativeRepository nativeQuery;
 	@Autowired
@@ -104,15 +109,26 @@ public class GajiController {
 		String rekpegawai = pegawai.getNomor_rekening();
 		return rekpegawai;
 	}
+	
+	@RequestMapping(value="/getValuepass", method=RequestMethod.GET)
+	public @ResponseBody Password getValuePass(@RequestParam("tanggal") String tanggal, Model model)
+	{
+		System.out.println(tanggal);
+		Password password = passwordService.FindByonePassword(tanggal);
+		model.addAttribute("password", password);
+		return password;
+	}
 
 	@RequestMapping(value="/trx/new" , method=RequestMethod.GET)
 	public String GajiNew(Model model)
 	{
 		Gaji gaji1 = new Gaji();
 		Pegawai pegawai = new Pegawai();	
+		Password password = new Password();
 		
 		model.addAttribute("pegawai", pegawai);
 		model.addAttribute("gaji", gaji1);
+		model.addAttribute("password", password);
 		model.addAttribute("listpegawai", pegawaiService.FindAll());
 		System.out.print(pegawai);
 		
@@ -125,16 +141,14 @@ public class GajiController {
 			HttpServletResponse response, HttpServletRequest request) throws IOException, JRException  {
 		Pegawai pegawai = new Pegawai();
 		
-		
+		Password passwordForm = passwordService.FindByone(Integer.valueOf(request.getParameter("passwordID").toString()));
 		int nip = Integer.valueOf(request.getParameter("nip").toString());
 		String jp = request.getParameter("jumlahPotongan");
 		String gb = request.getParameter("gajiBersih");
 		String gk = request.getParameter("gajiKotor");
 		String pp = request.getParameter("pph21");
-		String pass = request.getParameter("passwordEnkrip").toUpperCase();
-		Integer ps = request.getParameter("passwordEnkrip").length();
+		String password = passwordForm.getPasswordEnkrip().toString();
 		
-		  String password = caesarEncript.encrypt(pass.toUpperCase(), ps);
 		  String gajiBersih =  vigen.encipher(gb, password);
 		  String jumlahPotongan =  vigen.encipher(jp, password);
 		  String gajiKotor =  vigen.encipher(gk, password);
@@ -147,7 +161,7 @@ public class GajiController {
 		gajiForm.setGajiKotor(gajiKotor);
 		gajiForm.setPph21(pph21);
 		gajiForm.setPegawai(pegawai);
-		gajiForm.setPasswordEnkrip(password);
+		gajiForm.setPassword(passwordForm);
 		gajiService.createGaji(gajiForm);
 		redirectAttributes.addFlashAttribute("info", "Gaji created successfully");
 		
@@ -166,10 +180,10 @@ public class GajiController {
 		
 		for (Gaji gaji : gaj) {
 //			String pass = caesarEncript.decrypt(gaji.getPasswordEnkrip(), gaji.getPasswordEnkrip().length());
-			  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPasswordEnkrip());
-			  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip());
-			  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip());
-			  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPasswordEnkrip());
+			  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPassword().getPasswordEnkrip());
+			  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPassword().getPasswordEnkrip());
+			  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPassword().getPasswordEnkrip());
+			  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPassword().getPasswordEnkrip());
 			  
 			  gaji.setGajiBersih(gajiBersih);
 			  gaji.setGajiKotor(gajiKotor);
@@ -243,36 +257,36 @@ public class GajiController {
 		return "report/period";
 	}   
 	
-	@RequestMapping(value = { "/tes" }, method = RequestMethod.GET)
-	 public @ResponseBody List<Gaji> userFindAll() {
-
-
-			List<Gaji> gaj = gajiService.findByone("d953b48c-052d-5faf-3330-cdf6c96b44ca");
-			List<Gaji> all = new ArrayList<Gaji>();
-			
-			for (Gaji gaji : gaj) {
-//				String pass = caesarEncript.decrypt(gaji.getPasswordEnkrip(), gaji.getPasswordEnkrip().length());
-				  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPasswordEnkrip());
-				  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip());
-				  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip());
-				  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPasswordEnkrip());
-				  
-				  gaji.setGajiBersih(gajiBersih);
-				  gaji.setGajiKotor(gajiKotor);
-				  gaji.setJumlahPotongan(jumlahPotongan);
-				  gaji.setPph21(pph21);
-				  
-				  all.add(gaji);
-			}
-
-		
-//			Gson gson = new Gson();
-//			String test = gson.toJson(response);
-//			System.out.println(test);
-
-			return all;
-
-	    }
+//	@RequestMapping(value = { "/tes" }, method = RequestMethod.GET)
+//	 public @ResponseBody List<Gaji> userFindAll() {
+//
+//
+//			List<Gaji> gaj = gajiService.findByone("d953b48c-052d-5faf-3330-cdf6c96b44ca");
+//			List<Gaji> all = new ArrayList<Gaji>();
+//			
+//			for (Gaji gaji : gaj) {
+////				String pass = caesarEncript.decrypt(gaji.getPasswordEnkrip(), gaji.getPasswordEnkrip().length());
+//				  String gajiBersih =  vigen.decipher(gaji.getGajiBersih(), gaji.getPasswordEnkrip());
+//				  String jumlahPotongan =  vigen.decipher(gaji.getJumlahPotongan(), gaji.getPasswordEnkrip());
+//				  String gajiKotor =  vigen.decipher(gaji.getGajiKotor().toString(), gaji.getPasswordEnkrip());
+//				  String pph21 = vigen.decipher(gaji.getPph21(), gaji.getPasswordEnkrip());
+//				  
+//				  gaji.setGajiBersih(gajiBersih);
+//				  gaji.setGajiKotor(gajiKotor);
+//				  gaji.setJumlahPotongan(jumlahPotongan);
+//				  gaji.setPph21(pph21);
+//				  
+//				  all.add(gaji);
+//			}
+//
+//		
+////			Gson gson = new Gson();
+////			String test = gson.toJson(response);
+////			System.out.println(test);
+//
+//			return all;
+//
+//	    }
 
 
 }
