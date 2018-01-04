@@ -18,8 +18,8 @@ public class caesarEncript {
 		    
 		    public static void main(String[] args) 
 		    {
-		        String text = "This is awesome!";
-		        int offset = 5;
+		        String text = "JAN";
+		        int offset = text.length();
 		        
 		        String enc = encrypt(text, offset);
 		        System.out.println("Encrypted text: " + enc);
@@ -32,7 +32,8 @@ public class caesarEncript {
 		  public static String encrypt(String text, int offset)
 		    {
 		        char[] plain = text.toCharArray();
-
+//System.out.println(chars.length);
+//System.out.println(plain.length);
 		        for (int i = 0; i < plain.length; i++) {
 		            for (int j = 0; j < chars.length; j++) {
 		                if (j <= chars.length - offset) {

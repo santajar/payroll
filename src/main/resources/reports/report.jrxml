@@ -31,10 +31,6 @@ WHERE
 		<property name="com.jaspersoft.studio.field.label" value="pph21"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="gaji"/>
 	</field>
-	<field name="passwordEnkrip" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="password_enkrip"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="gaji"/>
-	</field>
 	<field name="gajiKotor" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="gaji_kotor"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="gaji"/>
