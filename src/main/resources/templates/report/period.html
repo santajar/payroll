@@ -29,7 +29,7 @@
 	                $.ajax({
 	                    type : "POST",
 	                    url : "/period",
-	                    data : {password:result,date:$("#date").val(),date1:$("#date1").val()},
+	                    data : {password:result,bulan:$("#bulan").val(),tahun:$("#tahun").val()},
 	                    success: function(data){
 	                    	// fill data to Modal Body
 	                        alert("report will be download")
@@ -53,21 +53,48 @@
                   <h3 class="box-title">Report Period</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                 <div class="login-box-body">
 			        <form method="POST">
-			          <div class="form-group col-xs-offset-4 col-xs-4">
-			            <input type="date" id="date" class="form-control" name="date"  data-date-format="yyyy-MM-dd"/>
-			          </div>
-			          <div class="form-group col-xs-offset-4 col-xs-4">
-			            <input type="date" id="date1" class="form-control" name="date1"  data-date-format="yyyy-MM-dd"/>
-			          </div>
-			          <div class="row">
-			            <div class="form-group col-xs-offset-4 col-xs-4">
+			        <div class="form-group col-md-offset-3 col-md-7" >
+                        <div class="form-group col-xs-4" >
+                           <label>Bulan</label>
+                       <div>
+                          <select  class="form-control" id="bulan" name="bulan" >
+                             <option value="01">januari</option>
+                             <option value="02">februari</option>
+                             <option value="03">maret</option>
+                             <option value="04">april</option>
+                             <option value="05">mei</option>
+                             <option value="06">juni</option>
+                             <option value="07">juli</option>
+                             <option value="08">agustus</option>
+                             <option value="09">september</option>
+                             <option value="10">oktober</option>
+                             <option value="11">november</option>
+                             <option value="12">desember</option>                                
+                          </select>
+                       </div>
+                        </div>
+                        <div class="form-group col-xs-4" >
+                          <label>Tahun</label>
+                           <div>
+                              <select class="form-control" id=""  name="tahun" >
+                                 <option value="2018">2018</option>
+                                 <option value="2019">2019</option>
+                                 <option value="2020">2020</option>
+                                 <option value="2021">2021</option>
+                                 <option value="2022">2022</option>
+                                 
+                                 
+                              </select>
+                           </div>
+                        </div>
+                     </div>
+			          <div class="form-group">
+			            <div class="form-group col-md-offset-5 col-md-5">
 			              <button type="button" class="btn btn-info btn-lg" id="btnId">Submit</button>
 			            </div>
 			          </div>			         
-			        </form>			        
-			      </div>
+			        </form>	
                 </div><!-- /.box-body -->
               </div><!-- /.box -->
               

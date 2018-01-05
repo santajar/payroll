@@ -218,17 +218,20 @@ public class GajiController {
 	}
 	
 	@RequestMapping(value="/period", method=RequestMethod.POST)
-	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request)
+	public String ReportPeriod(HttpServletResponse response, HttpServletRequest request) throws IOException
 	{	 
-		String date = request.getParameter("date");
-		String date1 = request.getParameter("date1");
+
+		Utility util = new Utility();
+		Map<String,Object> parameterMap = new HashMap<String,Object>();
+		String bulan = request.getParameter("bulan");
+		String tahun = request.getParameter("tahun");
 		String pass = request.getParameter("password");
 		String password = caesarEncript.encrypt(pass.toUpperCase(), pass.length());
-//		System.out.println(date);
-//		System.out.println(date1);
-//		System.out.println(password);
+		System.out.println(bulan);
+		System.out.println(tahun);
+		System.out.println(password);
 		
-		List<Map<String,Object>> list = nativeQuery.findRport(date, date1, password);
+		List<Map<String,Object>> list = nativeQuery.findRport(bulan, tahun, password);
 		
 		List<Map<String, Object>> mapList = new ArrayList<Map<String, Object>>();
 		
@@ -238,23 +241,31 @@ public class GajiController {
 		    	String gajiBersih = vigen.decipher(map.get("gaji_bersih").toString().trim(), password);
 		    	String jmlPotong = vigen.decipher(map.get("jumlah_potongan").toString().trim(), password);
 		    	
-		    	map.put("pph21", pph);
-		    	map.put("gaji_bersih", gajiBersih);
-		    	map.put("jumlah_potongan", jmlPotong);
+		    	map.put("pph21", Integer.valueOf(pph));
+		    	map.put("gaji_bersih", Integer.valueOf(gajiBersih));
+		    	map.put("jumlah_potongan", Integer.valueOf(jmlPotong));
 		    	
 		    	mapList.add(map);
 		    	
 		    
 		}
 		
-		for (Map<String, Object> map : mapList) {
-		    for (Map.Entry<String, Object> entry : map.entrySet()) {
-		    	
-		        System.out.println("List 2 : "+entry.getKey() + " - " + entry.getValue());
-		    }
-		}
+		JRDataSource datasource = new JRBeanCollectionDataSource(mapList);
+		parameterMap.put("datasource", datasource);
+
+		File file;
 		
-		return "report/period";
+		file = new ClassPathResource("reports/periode.jrxml").getFile();
+		String absoluteFile = file.getAbsolutePath();		
+	
+		JasperPrint jasperPrint = util.getObjectPdf(absoluteFile, parameterMap, datasource);	
+		
+	
+		Utility.sendPdfResponse(response, jasperPrint, "slip gaji");
+		
+		return null;
+		
+		
 	}   
 	
 //	@RequestMapping(value = { "/tes" }, method = RequestMethod.GET)

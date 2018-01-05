@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.penggajian.main.entity.Password;
 
 
 
@@ -24,15 +23,16 @@ public class NativeRepositoryImpl implements NativeRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Map<String, Object>> findRport(String date, String date1, String password) {
+	public List<Map<String, Object>> findRport(String bulan, String tahun, String password) {
 		// TODO Auto-generated method stub
 		Session ss = sessionFactory.getCurrentSession();
-		Query q = ss.createSQLQuery("SELECT p.nama_pegawai, p.nomor_rekening,g.password_enkrip, g.pph21, g.gaji_bersih, g.jumlah_potongan, YEAR(g.tanggal) as tanggal_gaji, MONTH(g.tanggal) as bulan "+ 
+		Query q = ss.createSQLQuery("SELECT p.nama_pegawai, p.nomor_rekening, g.pph21, g.gaji_bersih, g.jumlah_potongan, YEAR(g.tanggal) as tanggal_gaji, MONTHNAME(g.tanggal) as bulan "+ 
 			"from gaji g LEFT JOIN pegawai p ON "+
-			"g.pegawai_nip = p.nip "+
-			"WHERE g.password_enkrip =:password AND g.tanggal BETWEEN :date AND :date1");
-		q.setParameter("date1", date1);
-		q.setParameter("date", date);
+			"g.pegawai_nip = p.nip LEFT JOIN password ps ON\n" + 
+			"ps.id = g.password_id "+
+			"WHERE MONTH(g.tanggal) = :bulan AND YEAR(g.tanggal) = :tahun AND ps.password_enkrip=:password");
+		q.setParameter("bulan", bulan);
+		q.setParameter("tahun", tahun);
 		q.setParameter("password", password);
 		q.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
 		List<Map<String,Object>> aliasToValueMapList=q.list();
