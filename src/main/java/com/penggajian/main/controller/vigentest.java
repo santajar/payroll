@@ -1,6 +1,5 @@
 package com.penggajian.main.controller;
 
-import java.util.*;
 import java.util.Arrays;
 
 public class vigentest {
@@ -139,8 +138,8 @@ public class vigentest {
 		  public static void main(String args[]) {
 		    
 		    // Initialize values
-		    String key = "LEMON";
-		    String clear = "ATTACKATDAWN";
+//		    String key = "LEMON";
+//		    String clear = "ATTACKATDAWN";
 		    String cipher = "LXFOPVEFRNHR";
 		    int keyspace = 1;
 		    
