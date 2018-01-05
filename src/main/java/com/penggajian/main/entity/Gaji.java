@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
 import java.util.Date;
 
 
@@ -30,19 +31,21 @@ public class Gaji implements Serializable {
 	@Column(name="jumlah_potongan")
 	private String jumlahPotongan;
 
-	@Column(name="password_enkrip")
-	private String passwordEnkrip;
-
 	private String pph21;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date tanggal;
 
+	
 	//bi-directional many-to-one association to Pegawai
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	@JoinColumn(name = "pegawai_nip", updatable = false)
 	private Pegawai pegawai;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+	@JoinColumn(name = "password_id", updatable = false)
+	private Password password;
 
 	public Gaji() {
 	}
@@ -79,14 +82,6 @@ public class Gaji implements Serializable {
 		this.jumlahPotongan = jumlahPotongan;
 	}
 
-	public String getPasswordEnkrip() {
-		return this.passwordEnkrip;
-	}
-
-	public void setPasswordEnkrip(String passwordEnkrip) {
-		this.passwordEnkrip = passwordEnkrip;
-	}
-
 	public String getPph21() {
 		return this.pph21;
 	}
@@ -109,13 +104,16 @@ public class Gaji implements Serializable {
 
 	public void setPegawai(Pegawai pegawai) {
 		this.pegawai = pegawai;
+	}	
+
+	public Password getPassword() {
+		return password;
 	}
 
-	@Override
-	public String toString() {
-		return "Gaji [no_gaji=" + noGaji + ", gajiBersih=" + gajiBersih + ", gajiKotor=" + gajiKotor
-				+ ", jumlahPotongan=" + jumlahPotongan + ", passwordEnkrip=" + passwordEnkrip + ", pph21=" + pph21
-				+ ", tanggal=" + tanggal + ", pegawai=" + pegawai + "]";
+	public void setPassword(Password password) {
+		this.password = password;
 	}
+
+	
 
 }

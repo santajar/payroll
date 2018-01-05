@@ -2,6 +2,9 @@ package com.penggajian.main.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -34,6 +37,7 @@ public class Pegawai implements Serializable {
 	private String telpon;
 
 	//bi-directional many-to-one association to Gaji
+	@JsonIgnore
 	@OneToMany(mappedBy="pegawai",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<Gaji> gajis;
 

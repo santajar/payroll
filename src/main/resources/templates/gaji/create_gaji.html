@@ -27,6 +27,27 @@
                  }
              });
          });
+          
+          $('#tanggal').change(function() {
+              
+              var tgl = $('#tanggal').val();
+            	//console.log("ini "+pegawaiIDS);
+                $.ajax({
+                    type:"GET",
+                    url : "/getValuepass",
+                    data : { tanggal: tgl },
+                    success : function(data) {	
+                        $("#passwordEnkrip").val(data.passwordEnkrip);
+                        $("#passwordID").val(data.id);
+                        
+                    },
+                    
+                    error: function(e) {
+                    	/* console.log(e.message);
+                        alert(e.message);  */
+                    }
+                });
+            });
          });
          
          function guid() {
@@ -64,10 +85,11 @@
                      var num1 = document.getElementById('pph').value;
                      var num2 = document.getElementById('potongan').value;
                      var num3 = document.getElementById('kotor').value;
-                     if(num1 == null || num1 == ""){
-                    	 var result = parseInt(num3) - parseInt(num2);
+                     if(num1 == null || num1 == 0){
+                    	 var result = (parseInt(num3) - parseInt(num2));
                      }else{
-                    	 var result =parseInt(num3) - (((parseInt(num3) * parseInt(num1))/100) - parseInt(num2));
+                    	 var num = (((parseInt(num3) * parseInt(num1))/100) + parseInt(num2))
+                    	 var result =(parseInt(num3) - num);
                      }
          			
                      if (!isNaN(result)) {
@@ -128,7 +150,7 @@
                      </div>
                      <div class="col-md-6" th:classappend="${#fields.hasErrors('tanggal')}? 'has-error'">
                         <label>Create Date</label>
-                        <input type="date" class="form-control" data-date-format="yyyy-MM-dd"  name="tanggal" th:field="*{tanggal}" placeholder="Enter Date"/>
+                        <input type="date" id="tanggal" class="form-control" data-date-format="yyyy-MM-dd"  name="tanggal" th:field="*{tanggal}" placeholder="Enter Date"/>
                         <p th:if="${#fields.hasErrors('tanggal')}" th:errors="tanggal" th:class="text-red">Incorrect data</p>
                      </div>
                      <div class="form-row">
@@ -137,10 +159,11 @@
                            <input type="text" class="form-control" id="rekening" name="rekening" readonly="readonly" />
                            <!-- <p th:if="${#fields.hasErrors('telpon')}" th:errors="*{telpon}" th:class="text-red">Incorrect data</p> -->
                         </div>
-                        <div class="form-group col-md-6" th:classappend="${#fields.hasErrors('passwordEnkrip')}? 'has-error'">
+                        <div class="form-group col-md-6" >
                            <label>Password</label>
-                           <input type="password" class="form-control" name="passwordEnkrip" th:field="*{passwordEnkrip}" maxlength="25" placeholder="Enter Password Enkrip"/>
-                           <p th:if="${#fields.hasErrors('passwordEnkrip')}" th:errors="*{passwordEnkrip}" th:class="text-red">Incorrect data</p>
+                           <input type="password" id="passwordEnkrip" class="form-control" name="passwordEnkrip" readonly="readonly"  />
+                           <input type="hidden" id="passwordID" class="form-control" name="passwordID" maxlength="25" />
+                           
                         </div>
                      </div>
                   </div>

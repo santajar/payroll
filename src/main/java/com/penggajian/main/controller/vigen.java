@@ -16,6 +16,10 @@ public class vigen {
                         "Open text must contain only capital letters");
             }
             //add shift modularly
+//            System.out.println(s.charAt(i));
+//            System.out.println(getShift(key, i));
+//            System.out.println(s.charAt(i) + getShift(key, i));
+//            System.out.println(s.charAt(i) + getShift(key, i) - 26);
             char encyphered = s.charAt(i) + getShift(key, i) > 90 ? (char)((s.charAt(i) + getShift(key, i)) - 26) : (char)(s.charAt(i) + getShift(key, i));
             builder.append(encyphered);
         }
@@ -35,6 +39,8 @@ public class vigen {
                         "Ciphertext must contain only capital letters");
             }
             //subtract shift modularly
+//            System.out.println(s.charAt(i));
+//            System.out.println(getShift(key, i));
             char decyphered = s.charAt(i) - getShift(key, i) < 33 ? (char)((s.charAt(i) - getShift(key, i)) + 26) : (char)(s.charAt(i) - getShift(key, i));
             builder.append(decyphered);
         }
@@ -51,6 +57,7 @@ public class vigen {
                 throw new IllegalArgumentException("" +
                         "Key phrase must contain only capital letters");
             }
+//            System.out.println(((int)key.charAt(i % key.length())) - 33);
         return ((int)key.charAt(i % key.length())) - 33;
     }
     
@@ -58,6 +65,7 @@ public class vigen {
     
     
     public static void main(String[] args){
+
         String text = "4000000";
         String key = "!V@SHA";
         
