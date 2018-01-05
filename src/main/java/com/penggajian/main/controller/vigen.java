@@ -54,9 +54,13 @@ public class vigen {
         return ((int)key.charAt(i % key.length())) - 33;
     }
     
+    
+    
+    
     public static void main(String[] args){
         String text = "4000000";
         String key = "!V@SHA";
+        
         String enciphered = encipher(text, key);
         System.out.println(enciphered);
         System.out.println(decipher(enciphered, key));
