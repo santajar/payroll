@@ -39,5 +39,11 @@ public class PasswordService {
 		
 		return passwordrepo.FindByonePassword(tanggal);
 	}
+	
+	public Password findBulanAndTahun(String bulan, String tahun) {
+		
+		return passwordrepo.findByBulanInAndTahun(bulan, tahun);
+		
+	}
 
 }

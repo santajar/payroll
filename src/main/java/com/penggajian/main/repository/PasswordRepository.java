@@ -13,4 +13,6 @@ public interface PasswordRepository extends JpaRepository<Password, Integer> {
 	        nativeQuery=true
 	    )
 	public Password FindByonePassword(@Param("tanggal") String tanggal);
+	
+	Password findByBulanInAndTahun(String bulan, String tahun);
 }

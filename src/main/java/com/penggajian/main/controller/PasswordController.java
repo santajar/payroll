@@ -44,8 +44,16 @@ public class PasswordController {
 			Model model, RedirectAttributes redirectAttributes) {
 		String paswd = caesarEncript.encrypt(passForm.getPasswordEnkrip().toString().toUpperCase(), passForm.getPasswordEnkrip().toString().length());
 		passForm.setPasswordEnkrip(paswd);
-		passwordService.savePass(passForm);
-		redirectAttributes.addFlashAttribute("info", "Password created successfully");
+		Password pass = passwordService.findBulanAndTahun(passForm.getBulan(), passForm.getTahun());
+		if (pass != null) {
+			pass.setPasswordEnkrip(paswd);
+			passwordService.savePass(pass);
+			redirectAttributes.addFlashAttribute("info", "Password Update successfully");
+		}else {
+			passwordService.savePass(passForm);
+			redirectAttributes.addFlashAttribute("info", "Password created successfully");
+		}
+		
 		return "redirect:/password";
 	}
 	
